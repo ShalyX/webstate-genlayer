@@ -1,0 +1,25 @@
+{
+  "name": "webstate-genlayer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A consensus-backed web-state oracle built on GenLayer.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "genlayer-js": "1.1.8",
+    "lucide-react": "0.468.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "5.2.0",
+    "typescript": "5.7.2",
+    "vite": "8.3.4"
+  }
+}

@@ -58,7 +58,25 @@ export async function connectWallet(): Promise<string> {
 export async function switchToStudioNet(): Promise<void> {
   const provider = getProvider();
   if (!provider) throw new Error("Connect a browser wallet first.");
-  await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: STUDIONET_CHAIN_ID_HEX }] });
+  const currentChainId = String(await provider.request({ method: "eth_chainId" })).toLowerCase();
+  if (currentChainId === STUDIONET_CHAIN_ID_HEX.toLowerCase()) return;
+
+  const chainParams = {
+    chainId: STUDIONET_CHAIN_ID_HEX,
+    chainName: "Genlayer Studio Network",
+    rpcUrls: [studioEndpoint],
+    nativeCurrency: { name: "GEN Token", symbol: "GEN", decimals: 18 },
+    blockExplorerUrls: ["https://genlayer-explorer.vercel.app"],
+  };
+
+  try {
+    await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: STUDIONET_CHAIN_ID_HEX }] });
+  } catch (error) {
+    const code = typeof error === "object" && error !== null ? (error as { code?: unknown }).code : undefined;
+    if (code !== 4902) throw error;
+    await provider.request({ method: "wallet_addEthereumChain", params: [chainParams] });
+    await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: STUDIONET_CHAIN_ID_HEX }] });
+  }
 }
 
 async function client(account?: string): Promise<Client> {

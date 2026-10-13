@@ -2,6 +2,8 @@ node_modules
 dist
 artifacts
 *.tsbuildinfo
+__pycache__
+*.pyc
 .env.local
 .npm-cache
 .DS_Store
